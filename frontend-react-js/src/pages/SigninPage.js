@@ -15,7 +15,8 @@ export default function SigninPage() {
   const onsubmit = async (event) => {
     event.preventDefault();
     setErrors('')
-    console.log('onsubmit')
+    console.log('Cookies are ', Cookies)
+
     if (Cookies.get('user.email') === email && Cookies.get('user.password') === password){
       Cookies.set('user.logged_in', true)
       window.location.href = "/"
