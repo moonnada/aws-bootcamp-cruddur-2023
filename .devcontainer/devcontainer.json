@@ -12,9 +12,10 @@
 				"ms-azuretools.vscode-docker",
 				"ms-python.python",
 				"xabikos.JavaScriptSnippets",
-				"esbenp.prettier-vscode"
-			]
-		}
+				"esbenp.prettier-vscode",
+				"vscodevim.vim"
+			],
+			}
 	}
 
 	
