@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta, timezone
-from aws_xray_sdk.core import xray_recorder
+# from aws_xray_sdk.core import xray_recorder
 
 class NotificationsActivities:
   def run():
       # X-Ray
-      segment = xray_recorder.begin_segment('notifications_activities') 
+      # segment = xray_recorder.begin_segment('notifications_activities') 
       
       now = datetime.now(timezone.utc).astimezone()
       results = [{
@@ -30,7 +30,7 @@ class NotificationsActivities:
     
       ]
 
-      subsegment = xray_recorder.begin_subsegment('mock-data')
+      # subsegment = xray_recorder.begin_subsegment('mock-data')
         # X-Ray
       dict = {
        "now": now.isoformat(),
