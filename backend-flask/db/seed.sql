@@ -3,18 +3,17 @@ INSERT INTO
     public.users (
         display_name,
         handle,
-        cognito_user_id
+        email,
+        cognito_user_id,
+        created_at
     )
 VALUES (
-        'Andrew Brown',
-        'andrewbrown',
-        'MOCK'
-    ),
-    (
-        'Andrew Bayko',
-        'bayko',
-        'MOCK'
-    );
+        'Ray Kim',
+        'RayKim',
+        'test@test.com',
+        'randomid',
+        '07/27/1993'
+    )
 
 INSERT INTO
     public.activities (
