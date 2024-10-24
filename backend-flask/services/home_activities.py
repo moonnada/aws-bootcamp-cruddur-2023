@@ -30,4 +30,4 @@ class HomeActivities:
       ORDER BY activities.created_at DESC
       """)
 
-    return results
+    return result

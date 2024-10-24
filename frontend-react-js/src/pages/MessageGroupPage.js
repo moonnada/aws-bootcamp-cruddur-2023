@@ -1,7 +1,7 @@
 import './MessageGroupPage.css';
 import React from "react";
 import { useParams } from 'react-router-dom';
-import { checkAuth } from "../lib/CheckAuth";
+import checkAuth from "../lib/CheckAuth";
 
 import DesktopNavigation from '../components/DesktopNavigation';
 import MessageGroupFeed from '../components/MessageGroupFeed';
@@ -19,7 +19,8 @@ export default function MessageGroupPage() {
 
   const loadMessageGroupsData = async () => {
     try {
-      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/message_groups`
+      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/messages/${params.message_group_uuid}`
+      console.log('backendUrl : ', backend_url)
       const res = await fetch(backend_url, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`

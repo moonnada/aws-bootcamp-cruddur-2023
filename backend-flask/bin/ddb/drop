@@ -1,4 +1,4 @@
 #! /usr/bin/bash
 aws dynamodb delete-table  \
-  --table-name cruddur-messages \
+  --table-name Music \
   --endpoint-url "http://localhost:8000"
