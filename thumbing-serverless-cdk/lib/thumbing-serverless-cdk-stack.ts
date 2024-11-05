@@ -1,5 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
 import { Construct } from 'constructs';
@@ -15,7 +16,7 @@ export class ThumbingServerlessCdkStack extends cdk.Stack {
 
     // The code that defines your stack goes here
 
-    const bucketName: string = process.env.THUMBING_BUCKET_NAME as string;
+    const bucketName: string = process.env.THUMBING_BUCKET_NAME as string
     const folderInput: string = process.env.THUMBING_S3_FOLDER_INPUT as string;
     const folderOutput: string = process.env.THUMBING_S3_FOLDER_OUTPUT as string;
     const webhookUrl: string = process.env.THUMBING_WEBHOOK_URL as string;
@@ -24,10 +25,14 @@ export class ThumbingServerlessCdkStack extends cdk.Stack {
     console.log('bucketName', bucketName)
 
 
-    const bucket = this.createBucket(bucketName);
+    // const bucket = this.createBucket(bucketName);
+    const bucket = this.importBucket(bucketName);
     const lambda = this.createLambda(functionPath, bucketName, folderInput, folderOutput);
 
     this.createS3NotifyToLambda(folderInput, lambda, bucket)
+
+    const s3ReadWritePolicy = this.createPolicyBucketAccess(bucket.bucketArn);
+    lambda.addToRolePolicy(s3ReadWritePolicy);
 
   }
 
@@ -37,6 +42,11 @@ export class ThumbingServerlessCdkStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY
     })
     return bucket;
+  }
+
+  importBucket(bucketName: string): s3.IBucket {
+    const bucket = s3.Bucket.fromBucketName(this, "AssetsBucket", bucketName);
+    return bucket
   }
 
   createLambda(functionPath: string, bucketName: string, folderInput: string, folderOutput: string): lambda.IFunction {
@@ -61,5 +71,18 @@ export class ThumbingServerlessCdkStack extends cdk.Stack {
       destination,
       { prefix: prefix }
     )
+  }
+
+  createPolicyBucketAccess(bucketArn: string) {
+    const s3ReadWritePolicy = new iam.PolicyStatement({
+      actions: [
+        's3:GetObject',
+        's3:PutObject',
+      ],
+      resources: [
+        `${bucketArn}/*`,
+      ]
+    });
+    return s3ReadWritePolicy;
   }
 }
